@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import CastButton from './components/CastButton'
+import TwitchChannelForm from './components/TwitchChannelForm'
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <div className="App">
@@ -16,10 +16,8 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
 
-        <CastButton />
+        <TwitchChannelForm />
       </div>
     );
   }
 }
-
-export default App;

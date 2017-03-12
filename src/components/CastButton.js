@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import loadJS from '../js/loadScript';
 import '../styles/CastButton.css'
 
-class CastButton extends Component {
+export default class CastButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,14 +19,18 @@ class CastButton extends Component {
 
   render() {
     return (
-      <button id="cast-button" disabled={!this.state.enabled} onClick={this.cast}>Cast</button>
+      <button id="cast-button" disabled={!this.state.enabled} onClick={this.props.submit}>Cast</button>
     );
   }
 
   initCastAPI = (isAvailable, err) => {
     if (isAvailable) {
       console.log("Google Cast API loaded")
-      const appId = window.chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+
+      let appId = window.chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+      if (this.props.appId) {
+        appId = this.props.appId;
+      }
       const sessionRequest = new window.chrome.cast.SessionRequest(appId);
 
       const apiConfig = new window.chrome.cast.ApiConfig(sessionRequest,
@@ -44,7 +48,7 @@ class CastButton extends Component {
   }
 
   initFailure(err) {
-    console.log("Google Cast API failed to initialize: %s", err);
+    console.log("Google Cast API failed to initialize: %s", err.code);
   }
 
   receiverListener = (receiverAvailability) => {
@@ -73,8 +77,11 @@ class CastButton extends Component {
   }
 
   castError(err) {
-    console.log("Failed to cast: %s", err);
+    console.log("Failed to cast: %s", err.code);
   }
 }
 
-export default CastButton;
+CastButton.propTypes = {
+  submit: React.PropTypes.func.isRequired,
+  appId: React.PropTypes.string
+}
