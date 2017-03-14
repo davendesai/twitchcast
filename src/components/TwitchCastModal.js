@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button, ButtonGroup } from 'react-bootstrap';
 
 export default class TwitchCastModal extends Component {
   render() {
     return (
       <Modal show={ this.props.show }
              onHide={ this.props.onClose }>
+
         <Modal.Body>
-          <p>Found Streams</p>
+          <ButtonGroup>
+            {
+              this.props.streams.map(stream => {
+                const quality = Object.keys(stream)[0].toString()
+                const url = stream[quality]
+
+                return <Button key={ quality }
+                               onClick={ () => this.props.onSelect(url) }>
+                               { quality }</Button>
+              })
+            }
+          </ButtonGroup>
         </Modal.Body>
+
       </Modal>
     )
   }
@@ -17,6 +30,6 @@ export default class TwitchCastModal extends Component {
 TwitchCastModal.propTypes = {
   show: React.PropTypes.bool.isRequired,
   streams: React.PropTypes.array.isRequired,
-  onStream: React.PropTypes.func.isRequired,
+  onSelect: React.PropTypes.func.isRequired,
   onClose: React.PropTypes.func.isRequired
 }

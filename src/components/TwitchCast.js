@@ -27,7 +27,7 @@ export default class TwitchCast extends Component {
 
                 <TwitchCastModal show={ this.state.showModal }
                                  streams={ this.state.availableStreams }
-                                 onStream={ this._cast }
+                                 onSelect={ this._launchCast }
                                  onClose={ this._closeModal } />
             </div>
         );
@@ -52,7 +52,7 @@ export default class TwitchCast extends Component {
         });
     }
 
-    _cast = (url) => {
+    _launchCast = (url) => {
         this.button.cast(url);
     }
 
