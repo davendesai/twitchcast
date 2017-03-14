@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import TwitchCast from './components/TwitchCast'
+
 import logo from './logo.svg';
 import './App.css';
-
-import TwitchChannelForm from './components/TwitchChannelForm'
 
 export default class App extends Component {
   render() {
@@ -16,7 +16,7 @@ export default class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
 
-        <TwitchChannelForm />
+        <TwitchCast />
       </div>
     );
   }
