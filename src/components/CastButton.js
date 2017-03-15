@@ -43,19 +43,13 @@ export default class CastButton extends Component {
       const apiConfig = new window.chrome.cast.ApiConfig(sessionRequest,
                                                        this._sessionListener, 
                                                        this._receiverListener);
-      window.chrome.cast.initialize(apiConfig, this._initSuccess, this._initFailure)
+      window.chrome.cast.initialize(apiConfig, 
+                                    () => { console.log("Google Cast API initialized") },
+                                    (err) => { console.log("Failed to initialize Google Cast API: %s", err.code) });
     }
     else {
-      console.log("Google Cast API not loaded: %s", err);
+      console.log("Failed to load Google Cast API: %s", err);
     }  
-  }
-
-  _initSuccess() {
-    console.log("Google Cast API successfully initialized");
-  }
-
-  _initFailure(err) {
-    console.log("Google Cast API failed to initialize: %s", err.code);
   }
 
   _receiverListener = (receiverAvailability) => {
@@ -66,28 +60,44 @@ export default class CastButton extends Component {
   }
 
   _sessionListener = (session) => {
-    console.log("Cast Session created");
-    this.session = session;
+    session.addUpdateListener((isAlive) => {
+      console.log("Added update listener");
+      if(!isAlive) {
+        this.setState({ session: null });
+        console.log("Disconnected")
+      }
+    });
   }
 
   cast = (url) => {
-    if (!_.isString(url)) {
-      this._connectError({ code: "incorrect format" });
-      return;
+    if (this.state.session) {
+      this._castSuccess(this.state.session, url);
     }
-
-    if (this.session) {
-      this.connectSuccess();
-    }
-    window.chrome.cast.requestSession(this._connectSuccess, this._connectError);
+    window.chrome.cast.requestSession((session) => this._castSuccess(session, url), 
+                                      (err) => { console.log("Failed to create session: %s", err.code) });
   }
 
-  _connectSuccess() {
-    console.log("Connected successfully");
+  _castSuccess = (session, url) => {
+    console.log("Cast Session found/created");
+    this.setState({ session: session });
+    this.state.session.addUpdateListener(this._castListener);
+
+    const mediaInfo = new window.chrome.cast.media.MediaInfo(url);
+    mediaInfo.contentType = 'video/mp4';
+
+    const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
+    request.autoplay = true;
+
+    this.state.session.loadMedia(request, 
+                                 () => { console.log("Began casting") }, 
+                                 (err) => { console.log("Failed to cast: %s", err.code) });
   }
 
-  _connectError(err) {
-    console.log("Failed to connect: %s", err.code);
+  _castListener = (isAlive) => {
+    if (!isAlive) {
+      // Remove session when canceled from Cast button 
+      this.setState({ session: null });
+    }
   }
 }
 
