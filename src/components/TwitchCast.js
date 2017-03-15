@@ -4,6 +4,8 @@ import TwitchCastModal from './TwitchCastModal';
 
 import { getLiveStreams } from '../api/Twitch'
 
+import '../styles/TwitchCast.css';
+
 export default class TwitchCast extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +18,7 @@ export default class TwitchCast extends Component {
     
     render() {
         return (
-            <div>
+            <div className="twitchcast">
                 <form onSubmit={ this.handleSubmit }>
                     <input type="text"
                            value={ this.state.userInput }
