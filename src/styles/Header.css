@@ -1,4 +1,7 @@
-.app-header {
-  height: 4em;
-  background-color: rgb(255, 255, 255);
+#twitchcast-header {
+  display: flex;
+  justify-content: flex-end;
+  background-color: rgb(100, 65, 164);
+  margin-top: 15px;
+  margin-right: 15px;
 }

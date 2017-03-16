@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { TextField } from 'material-ui';
 import CastButton from './CastButton';
 import EntryModal from './EntryModal';
 
@@ -18,13 +19,13 @@ export default class EntryForm extends Component {
     
     render() {
         return (
-            <div className="entry-form">
+            <div id="twitchcast-entryform">
                 <form onSubmit={ this._handleSubmit }>
-                    <input type="text"
-                           value={ this.state.userInput }
-                           onChange={ this._handleChange } />
-
                     <CastButton ref={ input => this.button = input } />
+                    <TextField id="cast-form"
+                               type="text"
+                               value={ this.state.userInput }
+                               onChange={ this._handleChange } />
                 </form>
 
                 <EntryModal open={ this.state.showModal }

@@ -1,4 +1,5 @@
-.app-footer {
-  height: 3em;
+#twitchcast-footer {
   background: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
 }

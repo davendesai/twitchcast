@@ -3,14 +3,18 @@ import Header from './Header'
 import EntryForm from './EntryForm';
 import Footer from './Footer';
 
-import '../styles/TwitchCast.css'
+import '../styles/TwitchCast.css';
+import logo from '../../res/logo.png';
 
 export default class TwitchCast extends Component {
     render() {
         return (
-            <div className="container">
+            <div id="twitchcast-container">
                 <Header />
-                <div className="content">
+                <div id="twitchcast-logo">
+                    <img src={logo} alt="TwitchCast" />
+                </div>
+                <div id="twitchcast-content">
                     <EntryForm />
                 </div>
                 <Footer />

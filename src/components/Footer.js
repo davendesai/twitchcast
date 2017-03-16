@@ -5,7 +5,7 @@ import '../styles/Footer.css';
 export default class Footer extends Component {
   render() {
     return(
-      <div className="app-footer">
+      <div id="twitchcast-footer">
         <p>Footer</p>
       </div>
     )

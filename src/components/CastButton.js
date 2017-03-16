@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { IconButton } from 'material-ui';
 
 import _ from 'lodash';
 import { loadJS } from '../js/loadScript';
 
-import '../styles/CastButton.css'
+import SearchIcon from 'material-ui/svg-icons/action/search';
 
 export default class CastButton extends Component {
   constructor(props) {
@@ -22,11 +23,11 @@ export default class CastButton extends Component {
 
   render() {
     return (
-      <button id="cast-button" 
-              type="submit"
-              disabled={ !this.state.enabled }>
-              Cast
-      </button>
+      <IconButton id="cast-button"
+                  type="submit"
+                  disabled={!this.state.enabled} >
+                  <SearchIcon />
+      </IconButton>
     );
   }
 

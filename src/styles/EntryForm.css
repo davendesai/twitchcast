@@ -1,5 +1,5 @@
-.entry-form {
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: center;
+#twitchcast-entryform {
+  /* Frame */
+  width: 325px;
+  border: solid 2px black;
 }
