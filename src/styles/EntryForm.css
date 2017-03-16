@@ -1,0 +1,5 @@
+.entry-form {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}

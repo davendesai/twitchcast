@@ -4,7 +4,7 @@ import { Dialog } from 'material-ui';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-export default class TwitchCastModal extends Component {
+export default class EntryModal extends Component {
   render() {
     const buttons = this.props.streams.map(stream => {
       const quality = Object.keys(stream)[0].toString();
@@ -25,7 +25,7 @@ export default class TwitchCastModal extends Component {
   }
 }
 
-TwitchCastModal.propTypes = {
+EntryModal.propTypes = {
   open: React.PropTypes.bool.isRequired,
   streams: React.PropTypes.array.isRequired,
   onSelect: React.PropTypes.func.isRequired,

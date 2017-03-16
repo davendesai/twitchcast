@@ -41,7 +41,7 @@ export default class CastButton extends Component {
       const sessionRequest = new window.chrome.cast.SessionRequest(appId);
 
       const apiConfig = new window.chrome.cast.ApiConfig(sessionRequest,
-                                                       this._sessionListener, 
+                                                       null,
                                                        this._receiverListener);
       window.chrome.cast.initialize(apiConfig, 
                                     () => { console.log("Google Cast API initialized") },
@@ -57,16 +57,6 @@ export default class CastButton extends Component {
       console.log("Cast Receiver(s) found");
       this.setState({ enabled: true });
     } 
-  }
-
-  _sessionListener = (session) => {
-    session.addUpdateListener((isAlive) => {
-      console.log("Added update listener");
-      if(!isAlive) {
-        this.setState({ session: null });
-        console.log("Disconnected")
-      }
-    });
   }
 
   cast = (url) => {
