@@ -9,7 +9,7 @@ export default class CastButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      enabled: false,
+      enabled: true,
       session: null,
     }
   }

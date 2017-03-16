@@ -19,27 +19,27 @@ export default class TwitchCast extends Component {
     render() {
         return (
             <div className="twitchcast">
-                <form onSubmit={ this.handleSubmit }>
+                <form onSubmit={ this._handleSubmit }>
                     <input type="text"
                            value={ this.state.userInput }
-                           onChange={ this.handleChange } />
+                           onChange={ this._handleChange } />
 
                     <CastButton ref={ input => this.button = input } />
                 </form>
 
-                <TwitchCastModal show={ this.state.showModal }
+                <TwitchCastModal open={ this.state.showModal }
                                  streams={ this.state.availableStreams }
                                  onSelect={ this._handleSelect }
-                                 onClose={ () => this.setState({ showModal: false }) } />
+                                 onClose={ this._handleClose } />
             </div>
         );
     }
 
-    handleChange = (event) => {
+    _handleChange = (event) => {
         this.setState({ userInput: event.target.value });
     }
 
-    handleSubmit = (event) => {
+    _handleSubmit = (event) => {
         // Prevent submitting form data and triggering GET /?
         event.preventDefault();
 
@@ -56,5 +56,9 @@ export default class TwitchCast extends Component {
 
     _handleSelect = (url) => {
         this.button.cast(url);
+    }
+
+    _handleClose = () => {
+        this.setState({ showModal: false });
     }
 }
