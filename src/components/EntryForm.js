@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField } from 'material-ui';
+import { TextField, CircularProgress } from 'material-ui';
 import CastButton from './CastButton';
 import EntryModal from './EntryModal';
 
@@ -13,25 +13,31 @@ export default class EntryForm extends Component {
         this.state = {
             userInput: '',
             availableStreams: [ ],
-            showModal: false
+            showModal: false,
+            isLoading: false
         }
     }
     
     render() {
         return (
-            <div id="twitchcast-entryform">
-                <form onSubmit={ this._handleSubmit }>
-                    <CastButton ref={ input => this.button = input } />
-                    <TextField id="cast-form"
-                               type="text"
-                               value={ this.state.userInput }
-                               onChange={ this._handleChange } />
-                </form>
+            <div>
+                <div id="twitchcast-entryform-input">
+                    <form onSubmit={this._handleSubmit}>
+                        <CastButton ref={input => this.button = input} />
+                        <TextField id="cast-form"
+                                   type="text"
+                                   value={this.state.userInput}
+                                   onChange={this._handleChange} />
+                    </form>
 
-                <EntryModal open={ this.state.showModal }
-                            streams={ this.state.availableStreams }
-                            onSelect={ this._handleSelect }
-                            onClose={ this._handleClose } />
+                    <EntryModal open={this.state.showModal}
+                                streams={this.state.availableStreams}
+                                onSelect={this._handleSelect}
+                                onClose={this._handleClose} />
+                </div>
+                <div id="twitchcast-entryform-loader">
+                    { this.state.isLoading ? <CircularProgress size={ 35 } /> : null }
+                </div>
             </div>
         );
     }
@@ -46,20 +52,32 @@ export default class EntryForm extends Component {
 
         // Pull API information from current user input
         getLiveStreams(this.state.userInput).then((streams) => {
+            // Hide loading spinner no matter the response
+            this.setState({ isLoading: false });
+
             if (streams) {
                 this.setState({
                     availableStreams: streams,
-                    showModal: true 
+                    showModal: true
                 });
             }
         });
+
+        // Show loading spinner
+        this.setState({ isLoading: true });
     }
 
     _handleSelect = (url) => {
+        // Cast selected URL
+        this.setState({ isLoading: false });
         this.button.cast(url);
     }
 
     _handleClose = () => {
-        this.setState({ showModal: false });
+        // Closed the modal (either before or after casting)
+        this.setState({ 
+            isLoading: false,
+            showModal: false 
+        });
     }
 }
