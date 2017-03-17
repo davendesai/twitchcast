@@ -1,83 +1,72 @@
 import React, { Component } from 'react';
-import { TextField, CircularProgress } from 'material-ui';
-import CastButton from './CastButton';
-import EntryModal from './EntryModal';
+import SearchBox from './SearchBox';
+import LoadingIndicator from './LoadingIndicator';
+import StreamModal from './StreamModal';
 
-import { getLiveStreams } from '../api/Twitch'
-
-import '../styles/EntryForm.css';
+import _ from 'lodash';
+import { endpoints } from '../api/Twitch'
+import { cast } from '../js/castAPI';
 
 export default class EntryForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInput: '',
-            availableStreams: [ ],
+            channel: '',
+            qualities: [ ],
             showModal: false,
-            isLoading: false
+            isLoading: false,
+            showError: false
         }
     }
     
     render() {
         return (
             <div>
-                <div id="twitchcast-entryform-input">
-                    <form onSubmit={this._handleSubmit}>
-                        <CastButton ref={input => this.button = input} />
-                        <TextField id="cast-form"
-                                   type="text"
-                                   value={this.state.userInput}
-                                   onChange={this._handleChange} />
-                    </form>
+                <SearchBox onSearch={this._handleSearch}
+                           onSuccess={this._handleSearchSuccess}
+                           onError={this._handleSearchError} />
 
-                    <EntryModal open={this.state.showModal}
-                                streams={this.state.availableStreams}
-                                onSelect={this._handleSelect}
-                                onClose={this._handleClose} />
-                </div>
-                <div id="twitchcast-entryform-loader">
-                    { this.state.isLoading ? <CircularProgress size={ 35 } /> : null }
-                </div>
+                <StreamModal open={this.state.showModal}
+                             channel={this.state.channel}
+                             qualities={this.state.qualities}
+                             onSelect={this._handleModalSelect}
+                             onClose={this._handleModalClose} />
+
+                <LoadingIndicator show={this.state.isLoading} />
             </div>
         );
     }
 
-    _handleChange = (event) => {
-        this.setState({ userInput: event.target.value });
-    }
-
-    _handleSubmit = (event) => {
-        // Prevent submitting form data and triggering GET /?
-        event.preventDefault();
-
-        // Pull API information from current user input
-        getLiveStreams(this.state.userInput).then((streams) => {
-            // Hide loading spinner no matter the response
-            this.setState({ isLoading: false });
-
-            if (streams) {
-                this.setState({
-                    availableStreams: streams,
-                    showModal: true
-                });
-            }
+    _handleSearch = () => {
+        this.setState({
+            isLoading: true
         });
-
-        // Show loading spinner
-        this.setState({ isLoading: true });
     }
 
-    _handleSelect = (url) => {
-        // Cast selected URL
-        this.setState({ isLoading: false });
-        this.button.cast(url);
+    _handleSearchSuccess = (query, searchResults) => {
+        this.setState({
+            channel: query,
+            qualities: searchResults,
+            showModal: true,
+            isLoading: false
+        })
     }
 
-    _handleClose = () => {
-        // Closed the modal (either before or after casting)
-        this.setState({ 
-            isLoading: false,
-            showModal: false 
+    _handleSearchError = () => {
+        this.setState({
+            isLoading: false
         });
+    }
+
+    _handleModalSelect = (selection) => {
+        // Redirect to channel's chat
+        let endpoint = _.template(endpoints.CHAT)({ 'channel': this.state.channel });
+        //window.location.href = endpoint;
+    }
+
+    _handleModalClose = () => {
+        this.setState({
+            showModal: false
+        })
     }
 }

@@ -1,8 +1,9 @@
 import _ from 'lodash';
 import requestAPI from '../js/requestAPI'
 
-const endpoints = {
+export const endpoints = {
   BACKEND: 'http://twitchcast.herokuapp.com/api/streams/<%= channel %>',
+  CHAT: 'http://twitch.tv/<%= channel %>/chat'
 }
 
 export async function getLiveStreams(channelName) {
