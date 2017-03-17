@@ -10,19 +10,30 @@ const styles = StyleSheet.create({
 });
 
 export default function makeShaking(Target) {
-  return class extends Component {
+  class ShakingComponent extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        startShaking: this.props.shouldShake
+        shouldShake: this.props.shake
       }
+    }
+
+    componentWillReceiveProps(nextProps) {
+      this.setState({ shouldShake: nextProps.shake });
     }
 
     render() {
       return (
-        <Target { ...this.props }
-                frameClass={ this.state.startShaking ? css(styles.headShake) : null } />
+        <div className={this.state.shouldShake ? css(styles.headShake) : null} >
+          <Target { ...this.props } />
+        </div>
       );
     }
   }
+
+  ShakingComponent.propTypes = {
+    shake: React.PropTypes.bool.isRequired
+  }
+
+  return ShakingComponent;
 }

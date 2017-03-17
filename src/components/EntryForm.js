@@ -7,6 +7,9 @@ import _ from 'lodash';
 import { endpoints } from '../api/Twitch'
 import { cast } from '../js/castAPI';
 
+import makeShaking from '../anim/makeShaking';
+const ShakingSearchBox = makeShaking(SearchBox);
+
 export default class EntryForm extends Component {
     constructor(props) {
         super(props);
@@ -18,13 +21,15 @@ export default class EntryForm extends Component {
             showError: false
         }
     }
-    
+
     render() {
+
         return (
             <div>
-                <SearchBox onSearch={this._handleSearch}
-                           onSuccess={this._handleSearchSuccess}
-                           onError={this._handleSearchError} />
+                <ShakingSearchBox shake={this.state.showError}
+                                  onSearch={this._handleSearch}
+                                  onSuccess={this._handleSearchSuccess}
+                                  onError={this._handleSearchError} />
 
                 <StreamModal open={this.state.showModal}
                              channel={this.state.channel}
@@ -39,7 +44,8 @@ export default class EntryForm extends Component {
 
     _handleSearch = () => {
         this.setState({
-            isLoading: true
+            isLoading: true,
+            showError: false
         });
     }
 
@@ -54,11 +60,15 @@ export default class EntryForm extends Component {
 
     _handleSearchError = () => {
         this.setState({
-            isLoading: false
+            isLoading: false,
+            showError: true
         });
     }
 
     _handleModalSelect = (selection) => {
+        // Cast selected quality
+        //cast(selection);
+        
         // Redirect to channel's chat
         let endpoint = _.template(endpoints.CHAT)({ 'channel': this.state.channel });
         //window.location.href = endpoint;

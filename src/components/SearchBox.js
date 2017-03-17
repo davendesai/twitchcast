@@ -20,7 +20,7 @@ export default class SearchBox extends Component {
         <form onSubmit={this._handleSubmit}>
           <CastButton />
 
-          <TextField id="cast-form"
+          <TextField id="twitchcast-searchbox-input"
                      type="text"
                      value={this.state.userInput}
                      onChange={this._handleChange} />
