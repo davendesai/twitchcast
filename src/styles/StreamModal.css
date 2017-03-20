@@ -1,0 +1,23 @@
+#twitchcast-streammodal {
+  display: flex;
+  flex-direction: row;
+}
+
+#twitchcast-streammodal-buttons {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#twitchcast-streammodal-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 12px;
+}
+
+#twitchcast-streammodal-content h3 {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}

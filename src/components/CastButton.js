@@ -14,9 +14,8 @@ export default class CastButton extends Component {
 
   render() {
     return (
-      <IconButton id="cast-button"
-                  type="submit" >
-                  <SearchIcon />
+      <IconButton type="submit" >
+        <SearchIcon />
       </IconButton>
     );
   }

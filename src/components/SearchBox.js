@@ -17,13 +17,15 @@ export default class SearchBox extends Component {
   render() {
     return (
       <div id="twitchcast-searchbox">
-        <form onSubmit={this._handleSubmit}>
+        <form onSubmit={this._handleSubmit} >
           <CastButton />
 
-          <TextField id="twitchcast-searchbox-input"
-                     type="text"
+          <TextField type="text"
                      value={this.state.userInput}
-                     onChange={this._handleChange} />
+                     onChange={this._handleChange} 
+                     autoComplete="off"
+                     underlineShow={false}
+                     hintText="Channel Name" />
         </form>
       </div>
     );
@@ -47,6 +49,9 @@ export default class SearchBox extends Component {
       else {
         this.props.onError();
       }
+
+      // Reset the current input
+      this.setState({ userInput: '' });
     });
   }
 }

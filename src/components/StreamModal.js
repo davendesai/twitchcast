@@ -1,25 +1,60 @@
+import _ from 'lodash';
+import { getStreamImageURL } from '../api/Twitch';
+
 import React, { Component } from 'react';
-import { Dialog } from 'material-ui';
+import { RaisedButton, Dialog } from 'material-ui';
+import RemoteImage from 'react-remote-image';
+
+import '../styles/StreamModal.css';
+
+const styles = {
+  // https://github.com/callemall/material-ui/issues/5775
+  modal: {
+    border: '1px solid black',
+    borderRadius: '8px',
+    overflow: 'auto',
+    width: 550
+  },
+  button: {
+    margin: 12
+  }
+}
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 export default class StreamModal extends Component {
   render() {
+    const filter = ['mobile', 'audio', 'best', 'worst'];
+
     const buttons = this.props.qualities.map(option => {
       const quality = Object.keys(option)[0].toString();
       const url = option[quality];
 
-      return <button key={ quality }
-                     onClick={() => this.props.onSelect(url)}>
-                     { quality }
-             </button>
+      // Filter out unnecessary options
+      if (!_.includes(filter, quality)) {
+        return <RaisedButton key={quality}
+                             label={quality}
+                             style={styles.button}
+                             onClick={() => this.props.onSelect(url)} />
+      }
+      return null;
     });
 
     return (
       <Dialog open={this.props.open}
-              onRequestClose={this.props.onClose}>
-              { buttons }
+              onRequestClose={this.props.onClose}
+              contentStyle={styles.modal} >
+        <div id="twitchcast-streammodal">
+          <div id="twitchcast-streammodal-buttons">
+            {buttons}
+          </div>
+          <div id="twitchcast-streammodal-content">
+            <h3>{this.props.channel}</h3>
+            <RemoteImage src={getStreamImageURL(this.props.channel)} 
+                         width="320" />
+          </div>
+        </div>
       </Dialog>
     );
   }

@@ -1,8 +1,9 @@
 import _ from 'lodash';
-import requestAPI from '../js/requestAPI'
+import requestAPI from '../js/requestNetwork'
 
 export const endpoints = {
   BACKEND: 'http://twitchcast.herokuapp.com/api/streams/<%= channel %>',
+  SCREENSHOT: 'http://static-cdn.jtvnw.net/previews-ttv/live_user_<%= channel %>-640x360.jpg',
   CHAT: 'http://twitch.tv/<%= channel %>/chat'
 }
 
@@ -17,4 +18,9 @@ export async function getLiveStreams(channelName) {
   catch (err) {
     console.log(err);
   }
+}
+
+export function getStreamImageURL(channelName) {
+  let endpoint = _.template(endpoints.SCREENSHOT)({ 'channel': channelName });
+  return endpoint;
 }
