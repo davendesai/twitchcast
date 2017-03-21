@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header'
 import EntryForm from './EntryForm';
-import Footer from './Footer';
 
 import '../styles/TwitchCast.css';
 import logo from '../../res/logo.png';
@@ -17,7 +16,6 @@ export default class TwitchCast extends Component {
                 <div id="twitchcast-content">
                     <EntryForm />
                 </div>
-                <Footer />
             </div>
         );
     }

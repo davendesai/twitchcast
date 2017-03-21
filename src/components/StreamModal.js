@@ -2,10 +2,11 @@ import _ from 'lodash';
 import { getStreamImageURL } from '../api/Twitch';
 
 import React, { Component } from 'react';
-import { RaisedButton, Dialog, CircularProgress } from 'material-ui';
+import { RaisedButton, Dialog } from 'material-ui';
 import RemoteImage from 'react-remote-image';
 
 import '../styles/StreamModal.css';
+import placeholder from '../../res/placeholder.jpg'
 
 const styles = {
   // https://github.com/callemall/material-ui/issues/5775
@@ -22,10 +23,9 @@ const styles = {
 
 export default class StreamModal extends Component {
   render() {
-    const filter = ['mobile', 'audio', 'best', 'worst'];
-
-    const buttons = _.filter(this.props.qualities, (option) => {
+    const buttons = _.filter(this.props.qualities, option => {
       const quality = Object.keys(option)[0].toString();
+      const filter = ['mobile', 'audio', 'best', 'worst'];
       return !_.includes(filter, quality);
     }).map(valid_option => {
       const quality = Object.keys(valid_option)[0].toString();
@@ -39,6 +39,7 @@ export default class StreamModal extends Component {
                            onClick={() => this.props.onSelect(url)} />
     });
 
+
     return (
       <Dialog open={this.props.open}
               onRequestClose={this.props.onClose}
@@ -48,11 +49,14 @@ export default class StreamModal extends Component {
             {buttons}
           </div>
           <div id="twitchcast-streammodal-content">
-            <h3>{this.props.channel}</h3>
-            <RemoteImage src={getStreamImageURL(this.props.channel)} 
-                         width="320" 
+            <h3>{this.props.channel.toLowerCase()}</h3>
+            <RemoteImage src={getStreamImageURL(this.props.channel.toLowerCase())} 
+                         width="300"
                          renderLoading={() => {
-                           return <CircularProgress size={25} color='rgb(100, 65, 164)' /> 
+                           return <img src={placeholder} alt="Loading" width="300" />
+                         }} 
+                         renderFailure={() => {
+                           return <img src={placeholder} alt="Placeholder" width="300" />
                          }} />
           </div>
         </div>

@@ -4,7 +4,7 @@ import LoadingIndicator from './LoadingIndicator';
 import StreamModal from './StreamModal';
 
 import _ from 'lodash';
-import { endpoints } from '../api/Twitch'
+import { getStreamChatURL } from '../api/Twitch';
 import { cast } from '../js/castAPI';
 
 import makeShaking from '../anim/makeShaking';
@@ -23,7 +23,6 @@ export default class EntryForm extends Component {
     }
 
     render() {
-
         return (
             <div>
                 <ShakingSearchBox shake={this.state.showError}
@@ -67,11 +66,10 @@ export default class EntryForm extends Component {
 
     _handleModalSelect = (selection) => {
         // Cast selected quality
-        //cast(selection);
+        cast(selection);
         
         // Redirect to channel's chat
-        let endpoint = _.template(endpoints.CHAT)({ 'channel': this.state.channel });
-        //window.location.href = endpoint;
+        //window.location.href = getStreamChatURL(this.state.channel);
     }
 
     _handleModalClose = () => {

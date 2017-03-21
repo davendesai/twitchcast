@@ -13,11 +13,11 @@
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   margin-left: 12px;
 }
 
 #twitchcast-streammodal-content h3 {
-  margin-top: 10px;
-  margin-bottom: 15px;
+  margin-top: 0px;
 }

@@ -24,3 +24,8 @@ export function getStreamImageURL(channelName) {
   let endpoint = _.template(endpoints.SCREENSHOT)({ 'channel': channelName });
   return endpoint;
 }
+
+export function getStreamChatURL(channelName) {
+  let endpoint = _.template(endpoints.CHAT)({ 'channel': channelName });
+  return endpoint;
+}
