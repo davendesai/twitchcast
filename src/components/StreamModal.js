@@ -24,20 +24,19 @@ export default class StreamModal extends Component {
   render() {
     const filter = ['mobile', 'audio', 'best', 'worst'];
 
-    const buttons = this.props.qualities.map(option => {
+    const buttons = _.filter(this.props.qualities, (option) => {
       const quality = Object.keys(option)[0].toString();
-      const url = option[quality];
+      return !_.includes(filter, quality);
+    }).map(valid_option => {
+      const quality = Object.keys(valid_option)[0].toString();
+      const url = valid_option[quality];
 
-      // Filter out unnecessary options
-      if (!_.includes(filter, quality)) {
-        return <RaisedButton key={quality}
-                             label={quality}
-                             style={styles.button}
-                             labelColor='rgb(255, 255, 255)'
-                             backgroundColor='rgb(100, 65, 164)'
-                             onClick={() => this.props.onSelect(url)} />
-      }
-      return null;
+      return <RaisedButton key={quality}
+                           label={quality}
+                           style={styles.button}
+                           labelColor='rgb(255, 255, 255)'
+                           backgroundColor='rgb(100, 65, 164)'
+                           onClick={() => this.props.onSelect(url)} />
     });
 
     return (
@@ -53,7 +52,7 @@ export default class StreamModal extends Component {
             <RemoteImage src={getStreamImageURL(this.props.channel)} 
                          width="320" 
                          renderLoading={() => {
-                           return <CircularProgress size={35} color='rgb(100, 65, 164)' /> 
+                           return <CircularProgress size={25} color='rgb(100, 65, 164)' /> 
                          }} />
           </div>
         </div>
