@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { getStreamImageURL } from '../api/Twitch';
 
 import React, { Component } from 'react';
-import { RaisedButton, Dialog } from 'material-ui';
+import { RaisedButton, Dialog, CircularProgress } from 'material-ui';
 import RemoteImage from 'react-remote-image';
 
 import '../styles/StreamModal.css';
@@ -20,9 +20,6 @@ const styles = {
   }
 }
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 export default class StreamModal extends Component {
   render() {
     const filter = ['mobile', 'audio', 'best', 'worst'];
@@ -36,6 +33,8 @@ export default class StreamModal extends Component {
         return <RaisedButton key={quality}
                              label={quality}
                              style={styles.button}
+                             labelColor='rgb(255, 255, 255)'
+                             backgroundColor='rgb(100, 65, 164)'
                              onClick={() => this.props.onSelect(url)} />
       }
       return null;
@@ -52,7 +51,10 @@ export default class StreamModal extends Component {
           <div id="twitchcast-streammodal-content">
             <h3>{this.props.channel}</h3>
             <RemoteImage src={getStreamImageURL(this.props.channel)} 
-                         width="320" />
+                         width="320" 
+                         renderLoading={() => {
+                           return <CircularProgress size={35} color='rgb(100, 65, 164)' /> 
+                         }} />
           </div>
         </div>
       </Dialog>
