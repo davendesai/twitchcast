@@ -22,13 +22,17 @@ function _receiverListener(receiverAvailability) {
   }
 }
 
-export function cast(url) {
-  window.chrome.cast.requestSession(
-    (session) => _castSuccess(session, url),
-    (err) => { console.log("Failed to create session: %s", err.code) });
+export function cast(url, cb) {
+  return new Promise((resolve, reject) => {
+    window.chrome.cast.requestSession(
+      (session) => _castSuccess(session, url, resolve, reject),
+      (err) => { 
+        reject(new Error("Failed to create session: " + err.code))
+      });
+  });
 }
 
-function _castSuccess(session, url) {
+function _castSuccess(session, url, cb_success, cb_err) {
   console.log("Cast Session found/created");
 
   const mediaInfo = new window.chrome.cast.media.MediaInfo(url);
@@ -38,6 +42,8 @@ function _castSuccess(session, url) {
   request.autoplay = true;
 
   session.loadMedia(request,
-    () => { console.log("Began casting") },
-    (err) => { console.log("Failed to cast: %s", err.code) });
+    () => { cb_success() },
+    (err) => {
+      cb_err(new Error("Failed to cast: " + err.code))
+    });
 }

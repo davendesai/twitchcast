@@ -66,10 +66,10 @@ export default class EntryForm extends Component {
 
     _handleModalSelect = (selection) => {
         // Cast selected quality
-        cast(selection);
-        
-        // Redirect to channel's chat
-        //window.location.href = getStreamChatURL(this.state.channel);
+        cast(selection).then(() => {
+            // Redirect to channel's chat
+            window.location.href = getStreamChatURL(this.state.channel);
+        });
     }
 
     _handleModalClose = () => {
